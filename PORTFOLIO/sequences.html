@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Vidéaste — Séquences</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root {
+  --accent: #c8102e;
+  --bg: #f5f0e6;
+  --text: #111;
+  --muted: #666;
+}
+
+/* ===================== RESET & BASE ===================== */
+* { box-sizing: border-box; }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================== LOADER ===================== */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+.loader-text {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 20px;
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0%,100%{opacity:.4} 50%{opacity:1}
+}
+
+/* ===================== NAV DROITE ===================== */
+header.site-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100%;
+  background: var(--bg);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  box-shadow: -6px 0 20px rgba(0,0,0,0.08);
+  z-index: 2000;
+}
+.nav-inner { display: flex; flex-direction: column; align-items: center; gap: 60px; }
+.brand {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-size: 18px;
+}
+
+/* ===================== MAIN & GRID ===================== */
+main {
+  margin-right: 220px;
+  padding: 20px;
+  min-height: 100vh;
+  width: calc(100% - 220px);
+}
+.sequences-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin: 40px 0;
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto 60px auto;
+}
+.project-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.project-card:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+.project-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(200,16,46,0.7);
+  color: #fff;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  transition: opacity 0.3s ease;
+}
+.project-card:hover .overlay { opacity: 1; }
+.project-card .overlay h2 { margin: 0 0 10px 0; font-size: 1.5rem; }
+.project-card .overlay p { margin: 0; font-size: 1rem; }
+
+/* ===================== CLAP CINÉMA ===================== */
+.clap-top,.clap-bottom {
+  position: fixed; left:0; right:0; height:50vh; background:#000;
+  z-index:3000; transform-origin:center; transition:transform 0.9s cubic-bezier(0.77,0,0.175,1);
+  pointer-events:none; filter:drop-shadow(0 10px 25px rgba(0,0,0,0.3));
+}
+.clap-top{top:0;transform:translateY(-100%) rotateX(15deg);}
+.clap-bottom{bottom:0;transform:translateY(100%) rotateX(-15deg);}
+body.loaded{opacity:1; transition:opacity 0.8s ease-in-out;}
+body{opacity:0;}
+
+/* ===================== FOOTER ===================== */
+footer {
+  position: fixed; bottom:10px; left:20px; font-size:14px; color:var(--muted); z-index:10;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:800px){
+  header.site-nav { width:100%; height:auto; flex-direction:row; padding:12px 18px; border-left:none; border-bottom:1px solid rgba(0,0,0,0.1);}
+  .nav-inner{flex-direction:row; gap:12px;}
+  .brand{writing-mode:horizontal-tb;transform:none;}
+  nav ul{flex-direction:row;}
+  main{margin:0;margin-top:80px;width:100%;}
+  .sequences-title{font-size:2.2rem;}
+  .projects-grid{gap:20px;}
+}
+
+.interface-container { display: flex; justify-content: center; align-items: center; gap: 40px; margin-top: 350px; }
+.interface-img { width: 300px; transition: .3s; cursor: pointer; margin: -60px;}
+.interface-img.large { width: 500px;  z-index: 100;}
+
+.interface-container {
+  position: relative; /* nécessaire pour positionner les infos par rapport au container */
+}
+
+#info1 {
+  position: absolute;
+  top: 0px;
+  left: 40px;
+  width: 400px; /* adapte selon ton besoin */
+  display: none; /* affichage uniquement à l’ouverture de la fenêtre */
+  transition: 0.3s;
+  z-index: 100; /* au-dessus du fond */
+}
+
+#info2 {
+  position: absolute;
+  top: 0px;
+  left: 250px;
+  width: 400px; /* adapte selon ton besoin */
+  display: none; /* affichage uniquement à l’ouverture de la fenêtre */
+  transition: 0.3s;
+  z-index: 100; /* au-dessus du fond */
+}
+
+#message {
+  position: absolute;
+  top: -300px;
+  left: 200px;
+  width: 400px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message2 {
+  position: absolute;
+  top: 250px;
+  left: 700px;
+  width: 300px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message3 {
+  position: absolute;
+  top: -150px;
+  left: 560px;
+  width: 150px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message4 {
+  position: absolute;
+  top: -100px;
+  left: 1000px;
+  width: 200px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message5 {
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  width: 300px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message6 {
+  position: absolute;
+  top: 50px;
+  left: 525px;
+  width: 250px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message7 {
+  position: absolute;
+  top: -350px;
+  left: 700px;
+  width: 350px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message8 {
+  position: absolute;
+  top: -450px;
+  left: 100px;
+  width: 600px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message9 {
+  position: absolute;
+  top: -50px;
+  left: 800px;
+  width: 600px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+#message10 {
+  position: absolute;
+  top: 100px;
+  left: -50px;
+  width: 600px; /* adapte selon ton besoin */  
+  z-index: 10; /* au-dessus du fond */
+}
+
+
+
+</style>
+</head>
+<body>
+
+
+<!-- Clap cinéma -->
+<div class="clap-top"></div>
+<div class="clap-bottom"></div>
+
+<!-- NAV -->
+<header class="site-nav" role="navigation" aria-label="Navigation principale">
+  <div class="nav-inner">
+    <nav>
+      <ul id="menu">
+        <li>
+          <a href="index.html" class="nav-link">
+            <img src="icone1.png" alt="Accueil">
+          </a>
+        </li>
+        <li>
+          <a href="backstage.html" class="nav-link">
+            <img src="icone2.png" alt="Backstage">
+          </a>
+        </li>
+        <li>
+          <a href="sequences.html" class="nav-link">
+            <img src="icone3.png" alt="Séquences">
+          </a>
+        </li>
+        <li>
+          <a href="contact.html" class="nav-link">
+            <img src="icone4.png" alt="Contact">
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<!-- Main -->
+<main>
+<!-- INTERFACES AU CENTRE -->
+<div class="interface-container">
+  <img id="message" src="MESSAGE.png" alt="message">
+  <img id="message2" src="MESSAGE2.png" alt="message 2">
+  <img id="message3" src="MESSAGE3.png" alt="message 3">
+  <img id="message4" src="MESSAGE4.png" alt="message 4">
+  <img id="message5" src="MESSAGE5.png" alt="message 5">
+  <img id="message6" src="MESSAGE6.png" alt="message 6">
+  <img id="message7" src="MESSAGE7.png" alt="message 7">
+  <img id="message8" src="MESSAGE8.png" alt="message 8">
+  <img id="message9" src="MESSAGE9.png" alt="message 9">
+  <img id="message10" src="MESSAGE10.png" alt="message 10">
+  <img id="interface1" class="interface-img" src="INTERFACE.png" alt="interface 1" />
+  <img id="interface2" class="interface-img" src="INTERFACE2.png" alt="interface 2" />
+  <img id="info1" class="info-img" src="INFO.png" alt="info 1" />
+  <img id="info2" class="info-img" src="INFO2.png" alt="info 2" />
+</div>
+
+
+</main>
+
+<footer>© Marvyn Duboscq — Portfolio</footer>
+
+<script>
+
+const img1 = document.getElementById("interface1");
+const img2 = document.getElementById("interface2");
+
+// Fonction pour hover seulement si pas en grand
+function hoverEffect(img, srcHover, srcNormal) {
+    img.addEventListener("mouseenter", () => {
+        if(!img.classList.contains("large")) img.src = srcHover;
+    });
+    img.addEventListener("mouseleave", () => {
+        if(!img.classList.contains("large")) img.src = srcNormal;
+    });
+}
+
+// Appliquer le hover
+hoverEffect(img1, "INTERFACEOUVERT.png", "INTERFACE.png");
+hoverEffect(img2, "INTERFACE2OUVERT.png", "INTERFACE2.png");
+
+const info1 = document.getElementById("info1");
+const info2 = document.getElementById("info2");
+
+// Click → agrandir et changer l'image
+img1.addEventListener("click", () => {
+    if(!img1.classList.contains("large")){
+        img1.src = "FENETREPERSO.png";
+        img1.classList.add("large");
+        info1.style.display = "block"; // afficher info1
+    } else {
+        img1.src = "INTERFACE.png";
+        img1.classList.remove("large");
+        info1.style.display = "none"; // cacher info1
+    }
+});
+
+img2.addEventListener("click", () => {
+    if(!img2.classList.contains("large")){
+        img2.src = "FENETRERETRO.png";
+        img2.classList.add("large");
+        info2.style.display = "block"; // afficher info2
+    } else {
+        img2.src = "INTERFACE2.png";
+        img2.classList.remove("large");
+        info2.style.display = "none"; // cacher info2
+    }
+});
+
+
+
+
+
+
+
+
+
+
+// ====================== Loader ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const loader = document.getElementById('loader');
+  if(loader){setTimeout(()=>{loader.style.opacity=0; setTimeout(()=>loader.style.display='none',500);},4000);}
+});
+
+// ====================== Clap cinéma & nav fluide ======================
+const clapTop = document.querySelector('.clap-top');
+const clapBottom = document.querySelector('.clap-bottom');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('load', () => { document.body.classList.add('loaded'); });
+navLinks.forEach(link=>{
+  link.addEventListener('click', e=>{
+    const target = link.getAttribute('href'); if(!target) return;
+    e.preventDefault();
+    clapTop.classList.add('close'); clapBottom.classList.add('close');
+    const clapSound = new Audio('sounds/clap.mp3'); clapSound.volume=0.4; try{clapSound.play();}catch(e){}
+    setTimeout(()=>{ window.location.href = target; },950);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page Plantes — Reveal</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+  body {
+    background: #f5f0e6;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+  }
+
+  .plants-container {
+    display: grid;
+    grid-template-columns: repeat(3, 240px);
+    gap: 0px;
+    justify-content: center;
+    margin-left: 800px;
+    margin-top: -30px;
+  }
+
+  .plant-item img, .plant-item2 img {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .plant-item img {
+    margin-left: -580px;
+    z-index: 1;
+  }
+
+  .plant-item2 img {
+    margin-left: -700px;
+    z-index: 0;
+  }
+
+  .plant-item img:hover, .plant-item2 img:hover {
+    transform: scale(1.05);
+  }
+
+  /* 🔥 STYLE DU JEU */
+  .game-section {
+    margin-top: 20px;
+    margin-left: -200px;
+    text-align: center;
+  }
+
+  .game-section h1 {
+    font-size: 36px;
+    color: #3e3a36;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .game-section p {
+    font-style: italic;
+    color: #7a6f5a;
+    margin-bottom: 15px;
+  }
+
+  #score {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #5c574f;
+  }
+
+  #restart {
+    margin-bottom: 20px;
+    padding: 10px 24px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #6e675c, #3e3a36);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  #restart:hover {
+    background: linear-gradient(135deg, #3e3a36, #6e675c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  }
+
+  .game-container {
+    display: grid;
+    grid-template-columns: repeat(3, 140px);
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .card {
+    width: 140px;
+    height: 140px;
+    font-size: 16px;
+    background: linear-gradient(145deg, #fff9f0, #f0ebe2);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #3e3a36;
+    text-align: center;
+  }
+
+  .card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+    border: 2px solid #b3a48b;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<header class="site-nav">
+  <div class="nav-inner">
+    <nav>
+      <ul id="menu">
+        <li><a href="index.html"><img src="icone1.png" alt="Accueil"></a></li>
+        <li><a href="backstage.html"><img src="icone2.png" alt="Backstage"></a></li>
+        <li><a href="sequences.html"><img src="icone3.png" alt="Séquences"></a></li>
+        <li><a href="contact.html"><img src="icone4.png" alt="Contact"></a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- 🎮 JEU AU-DESSUS DES PLANTES -->
+<div class="game-section">
+  <h1>🎮 Mini Jeu — Clique sur le matériel que j'utilise !</h1>
+  <p>C'est peut-être pas au premier plan que tu vois le plus important.</p>
+  <div id="score">Score : 0 / 3</div>
+  <button id="restart">Rejouer</button>
+  <div class="game-container" id="game"></div>
+</div>
+
+<script>
+const goodItems = ["Caméra", "Lumière", "Ordinateur portable"];
+const wrongItems = ["Téléphone", "Trépied", "Clé USB"];
+let score = 0;
+
+function startGame() {
+  score = 0;
+  document.getElementById("score").textContent = `Score : ${score} / 3`;
+  const game = document.getElementById("game");
+  game.innerHTML = "";
+
+  let cardsList = [
+    ...goodItems.map(name => ({ name, correct: true })),
+    ...wrongItems.map(name => ({ name, correct: false }))
+  ].sort(() => Math.random() - 0.5);
+
+  cardsList.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = item.name;
+
+    card.addEventListener("click", () => {
+      if (item.correct) {
+        if (!card.classList.contains("correct")) {
+          card.style.background = "#28a745"; // vert uniforme
+          card.style.color = "white";        // texte blanc
+          card.classList.add("correct");     // marque comme sélectionné
+          score++;
+          document.getElementById("score").textContent = `Score : ${score} / 3`;
+        }
+        if (score === 3) {
+          alert("🎉 Bravo ! Tu as trouvé tout le matériel !");
+          startGame();
+        }
+      } else {
+        alert("❌ Perdu ! Tu as cliqué sur un mauvais matériel. Le jeu va recommencer.");
+        startGame();
+      }
+    });
+
+    game.appendChild(card);
+  });
+}
+
+document.getElementById("restart").addEventListener("click", startGame);
+startGame();
+</script>
+
+
+<!-- 🌱 PLANTES EN DESSOUS DU JEU -->
+<div class="plants-container">
+  <div class="plant-item"><img src="PLANTE1.png" data-hover="REVEAL1.png"></div>
+  <div class="plant-item2"><img src="PLANTE4.png"></div>
+  <div class="plant-item"><img src="PLANTE2.png" data-hover="REVEAL2.png"></div>
+  <div class="plant-item2"><img src="PLANTE5.png"></div>
+  <div class="plant-item"><img src="PLANTE3.png" data-hover="REVEAL3.png"></div>
+  <div class="plant-item2"><img src="PLANTE6.png"></div>
+</div>
+
+<script src="main.js"></script>
+<script>
+document.querySelectorAll('.plant-item img').forEach(img => {
+  const original = img.src;
+  const reveal = img.dataset.hover;
+
+  img.addEventListener('mouseenter', () => { img.src = reveal; });
+  img.addEventListener('mouseleave', () => { img.src = original; });
+});
+</script>
+
+</body>
+</html>

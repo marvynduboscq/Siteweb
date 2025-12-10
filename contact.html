@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Vidéaste — Contact</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root {
+  --accent: #c8102e;
+  --bg: #f5f0e6;
+  --text: #111;
+  --muted: #666;
+  --card-bg: #fff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ===================== NAV DROITE ===================== */
+header.site-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100%;
+  background: var(--bg);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  box-shadow: -6px 0 20px rgba(0,0,0,0.08);
+  z-index: 2000;
+}
+.nav-inner { display: flex; flex-direction: column; align-items: center; gap: 60px; }
+.brand {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-size: 18px;
+}
+
+
+/* ===================== MAIN ===================== */
+main {
+  margin-right: 220px;
+  padding: 60px 40px;
+  min-height: 100vh;
+  width: calc(100% - 220px);
+}
+
+.contact__wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.contact__intro {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.contact__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: var(--text);
+  position: relative;
+}
+
+.contact__title span {
+  color: var(--accent);
+}
+
+.contact__subtitle {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+/* ===================== CARTES ===================== */
+.contact__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.contact__card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.contact__card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact__card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.contact__card h2 {
+  color: var(--accent);
+  margin-bottom: 15px;
+}
+
+.contact__card p {
+  margin: 8px 0;
+}
+
+.contact__card a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact__card a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* ===================== FOOTER ===================== */
+footer {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:800px){
+  main { margin: 0; margin-top: 80px; width: 100%; padding: 40px 20px; }
+  header.site-nav { width: 100%; height: auto; flex-direction: row; padding: 12px 18px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+  nav ul { flex-direction: row; gap: 12px; }
+}
+
+
+</style>
+<script>
+window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
+});
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="site-nav" role="navigation" aria-label="Navigation principale">
+  <div class="nav-inner">
+    <nav>
+      <ul id="menu">
+        <li>
+          <a href="index.html" class="nav-link">
+            <img src="icone1.png" alt="Accueil">
+          </a>
+        </li>
+        <li>
+          <a href="backstage.html" class="nav-link">
+            <img src="icone2.png" alt="Backstage">
+          </a>
+        </li>
+        <li>
+          <a href="sequences.html" class="nav-link">
+            <img src="icone3.png" alt="Séquences">
+          </a>
+        </li>
+        <li>
+          <a href="contact.html" class="nav-link">
+            <img src="icone4.png" alt="Contact">
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<main>
+  <section id="contact" class="page contact">
+    <div class="contact__wrapper">
+      <div class="contact__intro">
+        <h1 class="contact__title">LET'S <span>Talk</span></h1>
+        <p class="contact__subtitle">et si on travaillait ensemble ?</p>
+      </div>
+
+      <div class="contact__cards">
+        <div class="contact__card">
+          <h2>Email</h2>
+          <p>Le moyen le plus rapide pour me joindre</p>
+          <p><a href="mailto:marvynduboscq0305@gmail.com">marvynduboscq0305@gmail.com</a></p>
+          <p>Réponse sous 24h</p>
+        </div>
+
+        <div class="contact__card">
+          <h2>Localisation</h2>
+          <p>Disponible pour projets locaux et à distance</p>
+          <p>France</p>
+          <p>Télétravail possible</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© Marvyn Duboscq — Portfolio</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Fade-in cartes au scroll
+  const cards = document.querySelectorAll('.contact__card');
+  const showCards = () => {
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      if(rect.top < window.innerHeight - 100) card.classList.add('show');
+    });
+  };
+  window.addEventListener('scroll', showCards);
+  window.addEventListener('load', showCards);
+});
+</script>
+
+</body>
+</html>
